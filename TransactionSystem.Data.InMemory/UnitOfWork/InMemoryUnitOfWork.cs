@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TransactionSystem.Data.InMemory.Repositories;
 using TransactionSystem.Models;
 
-namespace TransactionSystem.Data.InMemory
+namespace TransactionSystem.Data.InMemory.UnitOfWork
 {
     public class InMemoryUnitOfWork : IUnitOfWork
     {

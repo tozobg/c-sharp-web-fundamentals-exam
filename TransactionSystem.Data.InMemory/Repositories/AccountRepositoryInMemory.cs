@@ -1,6 +1,6 @@
 ﻿using TransactionSystem.Models;
 
-namespace TransactionSystem.Data.InMemory
+namespace TransactionSystem.Data.InMemory.Repositories
 {
     public class AccountRepositoryInMemory : InMemoryRepository<Account>, IAccountRepository
     {

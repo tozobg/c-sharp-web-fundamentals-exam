@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TransactionSystem.Data.InMemory
+namespace TransactionSystem.Data.InMemory.Repositories
 {
     public class InMemoryRepository<T> : IRepository<T> where T : class
     {

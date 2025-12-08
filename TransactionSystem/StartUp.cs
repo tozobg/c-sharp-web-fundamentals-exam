@@ -9,7 +9,9 @@ using TransactionSystem.Core;
 using TransactionSystem.Core.Interfaces;
 using TransactionSystem.Core.Services;
 using TransactionSystem.Data;
-using TransactionSystem.Data.InMemory;
+using TransactionSystem.Data.InMemory.Repositories;
+using TransactionSystem.Data.InMemory.UnitOfWork;
+using TransactionSystem.Data.UnitOfWork;
 using TransactionSystem.IO;
 using TransactionSystem.IO.Interfaces;
 using TransactionSystem.Models;
@@ -44,7 +46,7 @@ namespace TransactionSystem
                     }
                     else
                     {
-                        // SqlLite DbContext
+                        // Register SQLite DbContext
                         services.AddDbContext<TransactionDbContext>(options =>
                         {
                             options.UseSqlite("Data Source=Transactions.db");
@@ -53,7 +55,7 @@ namespace TransactionSystem
                             options.LogTo(_ => { });
                         });
 
-                        // Unit of Work
+                        // Register Unit of Work
                         services.AddScoped<IUnitOfWork, UnitOfWork>();
                     }
 
@@ -77,7 +79,7 @@ namespace TransactionSystem
             {
                 var provider = scope.ServiceProvider;
 
-                // Ensure DB exists
+                // Ensure DB exists when using SQLite
                 if (!useInMemory)
                 {
                     var db = provider.GetRequiredService<TransactionDbContext>();

@@ -1,6 +1,6 @@
 ﻿using TransactionSystem.Models;
 
-namespace TransactionSystem.Data
+namespace TransactionSystem.Data.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
