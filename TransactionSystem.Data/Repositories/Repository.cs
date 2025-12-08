@@ -18,5 +18,6 @@ namespace TransactionSystem.Data.Repositories
         public void Remove(T entity) => _dbSet.Remove(entity);
         public async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
         public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
+        public async Task<IEnumerable<T>> GetAllAsyncNoTrack() => await _dbSet.AsNoTracking().ToListAsync();
     }
 }
