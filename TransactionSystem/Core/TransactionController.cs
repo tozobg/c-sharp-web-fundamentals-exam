@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using TransactionSystem.Core.DTOs.Input;
 using TransactionSystem.Core.DTOs.Output;
 using TransactionSystem.Core.Services;
-using TransactionSystem.Models;
 
 namespace TransactionSystem.Core
 {

@@ -9,8 +9,10 @@ using TransactionSystem.Core;
 using TransactionSystem.Core.Interfaces;
 using TransactionSystem.Core.Services;
 using TransactionSystem.Data;
+using TransactionSystem.Data.InMemory;
 using TransactionSystem.IO;
 using TransactionSystem.IO.Interfaces;
+using TransactionSystem.Models;
 
 namespace TransactionSystem
 {
@@ -18,6 +20,9 @@ namespace TransactionSystem
     {
         static async Task Main(string[] args)
         {
+            // *** SWITCH HERE ***
+            bool useInMemory = false;  // <-- CHANGE THIS TO SWITCH InMemory and SQLite
+
             var host = Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(logging =>
                 {
@@ -25,17 +30,32 @@ namespace TransactionSystem
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    // DbContext
-                    services.AddDbContext<TransactionDbContext>(options =>
+
+                    if (useInMemory)
                     {
-                        options.UseSqlite("Data Source=Transactions.db");
+                        // Register InMemory Repositories
+                        services.AddSingleton<IRepository<Account>, InMemoryRepository<Account>>();
+                        services.AddSingleton<IRepository<Deposit>, InMemoryRepository<Deposit>>();
+                        services.AddSingleton<IRepository<Withdraw>, InMemoryRepository<Withdraw>>();
+                        services.AddSingleton<IRepository<Transfer>, InMemoryRepository<Transfer>>();
 
-                        // Disable EF Core SQL logging
-                        options.LogTo(_ => { });
-                    });
+                        // Register InMemory Unit of Work
+                        services.AddSingleton<IUnitOfWork, InMemoryUnitOfWork>();
+                    }
+                    else
+                    {
+                        // SqlLite DbContext
+                        services.AddDbContext<TransactionDbContext>(options =>
+                        {
+                            options.UseSqlite("Data Source=Transactions.db");
 
-                    // Unit of Work
-                    services.AddScoped<IUnitOfWork, UnitOfWork>();
+                            // Disable EF Core SQL logging
+                            options.LogTo(_ => { });
+                        });
+
+                        // Unit of Work
+                        services.AddScoped<IUnitOfWork, UnitOfWork>();
+                    }
 
                     // Services
                     services.AddScoped<AccountService>();
@@ -53,13 +73,16 @@ namespace TransactionSystem
                 })
                 .Build();
 
-            // Ensure DB exists
             using (var scope = host.Services.CreateScope())
             {
                 var provider = scope.ServiceProvider;
 
-                var db = provider.GetRequiredService<TransactionDbContext>();
-                db.Database.EnsureCreated();
+                // Ensure DB exists
+                if (!useInMemory)
+                {
+                    var db = provider.GetRequiredService<TransactionDbContext>();
+                    db.Database.EnsureCreated();
+                }
 
                 var engine = provider.GetRequiredService<Engine>();
                 await engine.Run();

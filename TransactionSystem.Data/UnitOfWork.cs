@@ -13,13 +13,14 @@ namespace TransactionSystem.Data
         public UnitOfWork(TransactionDbContext context)
         {
             _context = context;
+
             Accounts = new Repositories.AccountRepository(context);
             Deposits = new Repositories.Repository<Deposit>(context);
             Withdraws = new Repositories.Repository<Withdraw>(context);
             Transfers = new Repositories.Repository<Transfer>(context);
         }
 
-        public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();
+        public async Task CompleteAsync() => await _context.SaveChangesAsync();
 
         public void Dispose() => _context.Dispose();
     }

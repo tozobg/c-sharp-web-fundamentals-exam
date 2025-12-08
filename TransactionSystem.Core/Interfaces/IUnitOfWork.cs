@@ -6,5 +6,5 @@ public interface IUnitOfWork : IDisposable
     IRepository<Deposit> Deposits { get; }
     IRepository<Withdraw> Withdraws { get; }
     IRepository<Transfer> Transfers { get; }
-    Task<int> CompleteAsync(); // saves changes
+    Task CompleteAsync(); // saves changes
 }

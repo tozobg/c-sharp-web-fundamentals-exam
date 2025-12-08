@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionSystem.Data", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSystem.Core", "TransactionSystem.Core\TransactionSystem.Core.csproj", "{84BF04C8-52C8-480D-98AC-EDEB94C414DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSystem.Data.InMemory", "TransactionSystem.Data.InMemory\TransactionSystem.Data.InMemory.csproj", "{E0B5B6C0-0A54-4AA3-8A87-7D06E2620F6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{84BF04C8-52C8-480D-98AC-EDEB94C414DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84BF04C8-52C8-480D-98AC-EDEB94C414DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84BF04C8-52C8-480D-98AC-EDEB94C414DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0B5B6C0-0A54-4AA3-8A87-7D06E2620F6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0B5B6C0-0A54-4AA3-8A87-7D06E2620F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0B5B6C0-0A54-4AA3-8A87-7D06E2620F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0B5B6C0-0A54-4AA3-8A87-7D06E2620F6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

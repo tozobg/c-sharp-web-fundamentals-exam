@@ -14,10 +14,21 @@ namespace TransactionSystem.Data.Repositories
         }
 
         public async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
-        public void Update(T entity) => _dbSet.Update(entity);
-        public void Remove(T entity) => _dbSet.Remove(entity);
         public async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
         public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
-        public async Task<IEnumerable<T>> GetAllAsyncNoTrack() => await _dbSet.AsNoTracking().ToListAsync();
+
+        public Task UpdateAsync(T entity)
+        {
+            _context.Set<T>().Update(entity);
+
+            return Task.CompletedTask;
+        }
+
+        public Task RemoveAsync(T entity)
+        {
+            _context.Set<T>().Remove(entity);
+
+            return Task.CompletedTask;
+        }
     }
 }
