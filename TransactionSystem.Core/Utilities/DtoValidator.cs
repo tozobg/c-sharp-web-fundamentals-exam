@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace TransactionSystem.Core.Utilities
 {
@@ -6,8 +7,10 @@ namespace TransactionSystem.Core.Utilities
     {
         public static bool IsValid(object dto)
         {
-            var validationContext = new ValidationContext(dto);
-            var validationResults = new List<ValidationResult>();
+            StringBuilder resultMessages = new();
+
+            ValidationContext validationContext = new(dto);
+            List<ValidationResult> validationResults = new();
 
             bool isValid = Validator.TryValidateObject(dto, validationContext, validationResults, true);
 
@@ -15,8 +18,13 @@ namespace TransactionSystem.Core.Utilities
             {
                 if (!string.IsNullOrWhiteSpace(result.ErrorMessage))
                 {
-                    Console.WriteLine(result.ErrorMessage);
+                    resultMessages.AppendLine(result.ErrorMessage);
                 }
+            }
+
+            if (!isValid)
+            {
+                throw new Exception(resultMessages.ToString());
             }
 
             return isValid;

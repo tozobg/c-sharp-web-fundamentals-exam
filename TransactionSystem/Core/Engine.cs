@@ -14,7 +14,6 @@ namespace TransactionSystem.Core
     {
         private IReader reader;
         private IWriter writer;
-        private TransactionDbContext context;
         private readonly TransactionController _controller;
 
         public Engine(IReader reader, IWriter writer, TransactionController controller)
@@ -24,23 +23,19 @@ namespace TransactionSystem.Core
             this._controller = controller;
         }
 
-        //// Write code implementation
-        //public async Task Run()
-        //{
-        //}
         public async Task Run()
         {
             while (true)
             {
-                Console.WriteLine("\n--- Menu ---");
-                Console.WriteLine("1. Add Account");
-                Console.WriteLine("2. Deposit");
-                Console.WriteLine("3. Withdraw");
-                Console.WriteLine("4. Transfer");
-                Console.WriteLine("5. Show Accounts");
-                Console.WriteLine("6. Exit");
-                Console.Write("Choice: ");
-                var choice = Console.ReadLine();
+                writer.WriteLine("\n--- Menu ---");
+                writer.WriteLine("1. Add Account");
+                writer.WriteLine("2. Deposit");
+                writer.WriteLine("3. Withdraw");
+                writer.WriteLine("4. Transfer");
+                writer.WriteLine("5. Show Accounts");
+                writer.WriteLine("6. Exit");
+                writer.Write("Choice: ");
+                var choice = reader.ReadLine();
 
                 try
                 {
@@ -64,34 +59,35 @@ namespace TransactionSystem.Core
 
                         case "5":
                             await HandleShowAccounts();
-                            //await _controller.ShowAccountsAsync();
                             break;
 
                         case "6":
                             return;
 
                         default:
-                            Console.WriteLine("Invalid choice.");
+                            writer.WriteLine("Invalid choice.");
                             break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
+                    writer.WriteLine($"Error: {ex.Message}");
                 }
             }
         }
 
         private async Task HandleAddAccount()
         {
-            Console.Write("Full Name: ");
-            string fullName = Console.ReadLine()!;
-            Console.Write("Account Number: ");
-            int accNum = int.Parse(Console.ReadLine()!);
-            Console.Write("Account Balance: ");
-            decimal accBalance = decimal.Parse(Console.ReadLine()!);
+            writer.Write("Full Name: ");
+            string fullName = reader.ReadLine()!;
 
-            var dto = new CreateAccountDto
+            writer.Write("Account Number: ");
+            int accNum = int.Parse(reader.ReadLine()!);
+
+            writer.Write("Account Balance: ");
+            decimal accBalance = decimal.Parse(reader.ReadLine()!);
+
+            CreateAccountDto dto = new()
             {
                 FullName = fullName,
                 AccountNumber = accNum,
@@ -104,36 +100,45 @@ namespace TransactionSystem.Core
             }
 
             await _controller.AddAccountAsync(dto);
-            Console.WriteLine("Account created.");
+
+            writer.WriteLine("Account created.");
         }
 
         private async Task HandleDeposit()
         {
-            await _controller.ShowAccountsAsync();
-            Console.Write("Account Number: ");
-            var accNum = int.Parse(Console.ReadLine()!);
-            Console.Write("Amount: ");
-            var amount = decimal.Parse(Console.ReadLine()!);
+            writer.WriteLine(await _controller.ShowAccountsAsync());
 
-            var dto = new TransactionInputDto
+            writer.Write("Account Number: ");
+            int accNum = int.Parse(reader.ReadLine()!);
+
+            writer.Write("Amount: ");
+            decimal amount = decimal.Parse(reader.ReadLine()!);
+
+            TransactionInputDto dto = new()
             {
                 AccountNumber = accNum,
                 Amount = amount
             };
 
-            if (!DtoValidator.IsValid(dto)) return;
+            if (!DtoValidator.IsValid(dto))
+            {
+                return;
+            }
 
             await _controller.DepositAsync(dto);
-            Console.WriteLine("Deposit successful.");
+
+            writer.WriteLine("Deposit successful.");
         }
 
         private async Task HandleWithdraw()
         {
-            await _controller.ShowAccountsAsync();
-            Console.Write("Account Number: ");
-            var accNum = int.Parse(Console.ReadLine()!);
-            Console.Write("Amount: ");
-            var amount = decimal.Parse(Console.ReadLine()!);
+            writer.WriteLine(await _controller.ShowAccountsAsync());
+
+            writer.Write("Account Number: ");
+            int accNum = int.Parse(reader.ReadLine()!);
+
+            writer.Write("Amount: ");
+            decimal amount = decimal.Parse(reader.ReadLine()!);
 
             var dto = new TransactionInputDto
             {
@@ -141,23 +146,30 @@ namespace TransactionSystem.Core
                 Amount = amount
             };
 
-            if (!DtoValidator.IsValid(dto)) return;
+            if (!DtoValidator.IsValid(dto))
+            {
+                return;
+            }
 
             await _controller.WithdrawAsync(dto);
-            Console.WriteLine("Withdrawal successful.");
+
+            writer.WriteLine("Withdrawal successful.");
         }
 
         private async Task HandleTransfer()
         {
-            await _controller.ShowAccountsAsync();
-            Console.Write("From Account Number: ");
-            var from = int.Parse(Console.ReadLine()!);
-            Console.Write("To Account Number: ");
-            var to = int.Parse(Console.ReadLine()!);
-            Console.Write("Amount: ");
-            var amount = decimal.Parse(Console.ReadLine()!);
+            writer.WriteLine(await _controller.ShowAccountsAsync());
 
-            var dto = new TransferInputDto
+            writer.Write("From Account Number: ");
+            int from = int.Parse(reader.ReadLine()!);
+
+            writer.Write("To Account Number: ");
+            int to = int.Parse(reader.ReadLine()!);
+
+            writer.Write("Amount: ");
+            decimal amount = decimal.Parse(reader.ReadLine()!);
+
+            TransferInputDto dto = new()
             {
                 FromAccountNumber = from,
                 ToAccountNumber = to,
@@ -167,14 +179,14 @@ namespace TransactionSystem.Core
             if (!DtoValidator.IsValid(dto)) return;
 
             await _controller.TransferAsync(dto);
-            Console.WriteLine("Transfer successful.");
+            writer.WriteLine("Transfer successful.");
         }
 
         private async Task HandleShowAccounts()
         {
             string result = await _controller.ShowAccountsAsync();
 
-            Console.WriteLine(result);
+            writer.WriteLine(result);
         }
     }
 }
