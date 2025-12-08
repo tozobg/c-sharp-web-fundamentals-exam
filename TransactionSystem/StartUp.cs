@@ -1,4 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
 using TransactionSystem.Core;
@@ -6,6 +10,7 @@ using TransactionSystem.Core.Interfaces;
 using TransactionSystem.Core.Services;
 using TransactionSystem.Data;
 using TransactionSystem.IO;
+using TransactionSystem.IO.Interfaces;
 
 namespace TransactionSystem
 {
@@ -13,24 +18,52 @@ namespace TransactionSystem
     {
         static async Task Main(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<TransactionDbContext>();
-            optionsBuilder.UseSqlite("Data Source=Transactions.db");
+            var host = Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                })
+                .ConfigureServices((context, services) =>
+                {
+                    // DbContext
+                    services.AddDbContext<TransactionDbContext>(options =>
+                    {
+                        options.UseSqlite("Data Source=Transactions.db");
 
-            using var context = new TransactionDbContext(optionsBuilder.Options);
+                        // Disable EF Core SQL logging
+                        options.LogTo(_ => { });
+                    });
 
-            // Ensure the database is created
-            context.Database.EnsureCreated();
+                    // Unit of Work
+                    services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            UnitOfWork uow = new(context);
-            AccountService accountService = new(uow);
-            TransactionService transactionService = new(uow);
-            TransactionController controller = new(accountService, transactionService);
+                    // Services
+                    services.AddScoped<AccountService>();
+                    services.AddScoped<TransactionService>();
 
-            // Create engine with reader and writer
-            IEngine engine = new Engine(new ConsoleReader(), new ConsoleWriter(), controller);
+                    // Reader/Writer
+                    services.AddScoped<IReader, ConsoleReader>();
+                    services.AddScoped<IWriter, ConsoleWriter>();
 
-            // Start program
-            await engine.Run();
+                    // Controller
+                    services.AddScoped<TransactionController>();
+
+                    // Engine
+                    services.AddScoped<Engine>();
+                })
+                .Build();
+
+            // Ensure DB exists
+            using (var scope = host.Services.CreateScope())
+            {
+                var provider = scope.ServiceProvider;
+
+                var db = provider.GetRequiredService<TransactionDbContext>();
+                db.Database.EnsureCreated();
+
+                var engine = provider.GetRequiredService<Engine>();
+                await engine.Run();
+            }
         }
     }
 }
