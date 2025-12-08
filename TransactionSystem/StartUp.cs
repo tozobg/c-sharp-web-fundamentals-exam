@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 using TransactionSystem.Core;
 using TransactionSystem.Core.Interfaces;
 using TransactionSystem.Data;
@@ -9,7 +10,7 @@ namespace TransactionSystem
 {
     public class StartUp
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<TransactionDbContext>();
             optionsBuilder.UseSqlite("Data Source=Transactions.db");
@@ -20,10 +21,10 @@ namespace TransactionSystem
             context.Database.EnsureCreated();
 
             // Create engine with reader and writer
-            IEngine engine = new Engine(new ConsoleReader(), new ConsoleWriter());
+            IEngine engine = new Engine(new ConsoleReader(), new ConsoleWriter(), context);
 
             // Start program
-            engine.Run();
+            await engine.Run();
         }
     }
 }

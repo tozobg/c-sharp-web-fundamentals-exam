@@ -1,7 +1,9 @@
-﻿namespace TransactionSystem.Core.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace TransactionSystem.Core.Interfaces
 {
     public interface IEngine
     {
-        void Run();
+        Task Run();
     }
 }

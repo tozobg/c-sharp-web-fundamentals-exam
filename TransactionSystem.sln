@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSystem", "TransactionSystem\TransactionSystem.csproj", "{93909A98-0816-4C79-B4B6-B3DA8AD4FAF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionSystem", "TransactionSystem\TransactionSystem.csproj", "{93909A98-0816-4C79-B4B6-B3DA8AD4FAF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSystem.Models", "TransactionSystem.Models\TransactionSystem.Models.csproj", "{074130DE-7D26-4C09-9B85-87B51E088BFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionSystem.Models", "TransactionSystem.Models\TransactionSystem.Models.csproj", "{074130DE-7D26-4C09-9B85-87B51E088BFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSystem.Data", "TransactionSystem.Data\TransactionSystem.Data.csproj", "{BC6F670F-2E12-4590-AB47-E95F4486B367}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionSystem.Data", "TransactionSystem.Data\TransactionSystem.Data.csproj", "{BC6F670F-2E12-4590-AB47-E95F4486B367}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSystem.Core", "Core\TransactionSystem.Core.csproj", "{84BF04C8-52C8-480D-98AC-EDEB94C414DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSystem.Core", "TransactionSystem.Core\TransactionSystem.Core.csproj", "{84BF04C8-52C8-480D-98AC-EDEB94C414DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
