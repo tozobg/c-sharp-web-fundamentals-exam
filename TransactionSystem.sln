@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionSystem.Models", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionSystem.Data", "TransactionSystem.Data\TransactionSystem.Data.csproj", "{BC6F670F-2E12-4590-AB47-E95F4486B367}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSystem.Core", "TransactionSystem.Core\TransactionSystem.Core.csproj", "{84BF04C8-52C8-480D-98AC-EDEB94C414DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionSystem.Core", "TransactionSystem.Core\TransactionSystem.Core.csproj", "{84BF04C8-52C8-480D-98AC-EDEB94C414DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSystem.Data.InMemory", "TransactionSystem.Data.InMemory\TransactionSystem.Data.InMemory.csproj", "{E0B5B6C0-0A54-4AA3-8A87-7D06E2620F6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionSystem.Data.InMemory", "TransactionSystem.Data.InMemory\TransactionSystem.Data.InMemory.csproj", "{E0B5B6C0-0A54-4AA3-8A87-7D06E2620F6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionSystem.Tests", "TransactionSystem.Tests\TransactionSystem.Tests.csproj", "{0B08BB7A-6F71-4DE2-9611-0DF198497649}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{E0B5B6C0-0A54-4AA3-8A87-7D06E2620F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0B5B6C0-0A54-4AA3-8A87-7D06E2620F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0B5B6C0-0A54-4AA3-8A87-7D06E2620F6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B08BB7A-6F71-4DE2-9611-0DF198497649}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B08BB7A-6F71-4DE2-9611-0DF198497649}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B08BB7A-6F71-4DE2-9611-0DF198497649}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B08BB7A-6F71-4DE2-9611-0DF198497649}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
