@@ -10,6 +10,9 @@ using TransactionSystem.Core.Utilities;
 
 namespace TransactionSystem.Core
 {
+    /// <summary>
+    /// UI of app using Console for input and output. Having interactive menu and handlers for options.
+    /// </summary>
     public class Engine : IEngine
     {
         private IReader reader;

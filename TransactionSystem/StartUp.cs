@@ -18,6 +18,10 @@ using TransactionSystem.Models;
 
 namespace TransactionSystem
 {
+    /// <summary>
+    /// Start up of program and settings.
+    /// Included user changable settings
+    /// </summary>
     public class StartUp
     {
         static async Task Main(string[] args)
@@ -70,8 +74,6 @@ namespace TransactionSystem
                                 options.LogTo(_ => { });
                             });
                         }
-
-
 
                         // Register Unit of Work
                         services.AddScoped<IUnitOfWork, UnitOfWork>();
