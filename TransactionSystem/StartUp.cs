@@ -24,6 +24,7 @@ namespace TransactionSystem
         {
             // *** SWITCH HERE ***
             bool useInMemory = false;  // <-- CHANGE THIS TO SWITCH InMemory and SQLite
+            bool useInMemorySQLite = false;  // <-- CHANGE THIS TO SWITCH SQLite:memory and SQLite:standart
 
             var host = Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(logging =>
@@ -47,13 +48,30 @@ namespace TransactionSystem
                     else
                     {
                         // Register SQLite DbContext
-                        services.AddDbContext<TransactionDbContext>(options =>
+                        if (useInMemorySQLite)
                         {
-                            options.UseSqlite("Data Source=Transactions.db");
+                            // In memory
+                            services.AddDbContext<TransactionDbContext>(options =>
+                            {
+                                options.UseInMemoryDatabase("TransactionSystemDb");
 
-                            // Disable EF Core SQL logging
-                            options.LogTo(_ => { });
-                        });
+                                // Disable EF Core SQL logging
+                                options.LogTo(_ => { });
+                            });
+                        }
+                        else
+                        {
+                            // Standart
+                            services.AddDbContext<TransactionDbContext>(options =>
+                            {
+                                options.UseSqlite("Data Source=Transactions.db");
+
+                                // Disable EF Core SQL logging
+                                options.LogTo(_ => { });
+                            });
+                        }
+
+
 
                         // Register Unit of Work
                         services.AddScoped<IUnitOfWork, UnitOfWork>();
