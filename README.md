@@ -10,23 +10,21 @@
 - Create Account  
 - Deposit  
 - Withdraw  
-- Transfer between accounts  
+- Transfer between accounts  (TODO)
 
 ### Architecture Highlights
 - **Separation of concerns** across:
   - `TransactionSystem.Core`
-  - `TransactionSystem.Data` (EF Core SQLite/SQLite in memory)
-  - `TransactionSystem.Data.InMemory` (In memory objects)
+  - `TransactionSystem.Data`
   - `TransactionSystem.Models`
-  - `TransactionSystem` Console
+  - `TransactionSystem.Web`
 
 - **Unit of Work Pattern**  
 - **Repository Pattern**  
 - **DTO-based communication** 
 
-### Two Data Providers
-- **SQLite provider** (default + in memory)
-- **In-Memory provider** (easy switching)
+### Database Provider
+- **SQL Server
 
 ### NUnit Unit Tests
 - Uses the **In-Memory Data Layer** for isolated testing  
@@ -38,7 +36,7 @@
 
 ---
 
-## Database Structure (SQLite)
+## Database Structure (MSSQL)
 
 ![Database Diagram](assets/db_schhema.png)
 
@@ -77,17 +75,8 @@
 
 ---
 
-## Switching Between SQLite & In-Memory
-
-Inside **StartUp.cs**:
-
-```csharp
-bool useInMemory = false; // set true to use InMemory instead of SQLite
-bool useInMemorySQLite = false;  // set true to use SQLite but in memory variant
-```
-
 
 ## StartUp 
-TransactionSystem -> StartUp.cs
+TransactionSystem.Web -> Program.cs
 
 Enjoy exploring the project!

@@ -28,11 +28,6 @@ namespace TransactionSystem.Web
             builder.Services.AddScoped<AccountService>();
             builder.Services.AddScoped<TransactionService>();
 
-
-
-
-
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
