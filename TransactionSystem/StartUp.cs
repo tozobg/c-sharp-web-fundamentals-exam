@@ -38,7 +38,8 @@ namespace TransactionSystem
                     // Standart
                     services.AddDbContext<TransactionDbContext>(options =>
                     {
-                        options.UseSqlite("Data Source=Transactions.db");
+                        //options.UseSqlite("Data Source=Transactions.db");
+                        options.UseSqlServer(@"Server=.;Database=TransactionSystem;User Id=softuni;Password=123456;Trusted_Connection=True;TrustServerCertificate=True;");
 
                         // Disable EF Core SQL logging
                         options.LogTo(_ => { });
@@ -116,7 +117,7 @@ namespace TransactionSystem
                 //}
 
                 var db = provider.GetRequiredService<TransactionDbContext>();
-                db.Database.EnsureCreated();
+                //db.Database.EnsureCreated();
 
                 var engine = provider.GetRequiredService<Engine>();
                 await engine.Run();
