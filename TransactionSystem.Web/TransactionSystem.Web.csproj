@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TransactionSystem.Core\TransactionSystem.Core.csproj" />
+    <ProjectReference Include="..\TransactionSystem.Data\TransactionSystem.Data.csproj" />
+    <ProjectReference Include="..\TransactionSystem.Models\TransactionSystem.Models.csproj" />
+  </ItemGroup>
+
+</Project>
