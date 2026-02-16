@@ -1,8 +1,49 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+ *@
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container mt-5">
+    <div class="p-3 mb-4 bg-light rounded-3 border">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Transaction Management System</h1>
+            <p class="col-md-8 fs-4">
+                Welcome to my ASP.NET Core MVC project. This system handles complex banking
+                transactions with a robust SQL Server backend.
+            </p>
+            <a asp-controller="Account" asp-action="Index" class="btn btn-primary btn-lg">View All Accounts</a>
+        </div>
+    </div>
+
+    <div class="row align-items-md-stretch">
+        <div class="col-md-6">
+            <div class="h-100 p-5 text-white bg-dark rounded-3">
+                <h2>About the Developer</h2>
+                <p>
+                    Anatoli Ivanov Nikulov, a software developer focused on building clean, maintainable C# applications.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="h-100 p-5 bg-light border rounded-3">
+                <h2>The Tech Stack</h2>
+                <ul>
+                    <li><strong>Backend:</strong> C# .NET Core</li>
+                    <li><strong>Database:</strong> SQL Server (via EF Core)</li>
+                    <li><strong>Architecture:</strong> Repository & Unit of Work Patterns</li>
+                    <li><strong>Frontend:</strong> Razor Views & Bootstrap</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
