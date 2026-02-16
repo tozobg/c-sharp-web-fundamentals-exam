@@ -1,6 +1,6 @@
 ﻿# Transaction System - Console Application
 
-Тransaction system written in **C# (.NET 8)** for interview task.  
+Тransaction system written in **C# (.NET 8)** for softuni web exam task.  
 
 ---
 
