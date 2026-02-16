@@ -19,7 +19,7 @@
                 <td>@account.FullName</td>
                 <td>@account.Balance.ToString("C")</td>
                 <td>
-                    <a class="btn btn-primary" href="/Transaction/Deposit?AccountNumber=@account.AccountNumber">Deposit</a>
+                    <a asp-action="Edit" asp-route-id="@account.Id" class="btn btn-sm btn-warning">Edit</a>
                 </td>
             </tr>
         }

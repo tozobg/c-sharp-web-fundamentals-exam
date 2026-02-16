@@ -53,10 +53,53 @@ namespace TransactionSystem.Core.Services
             var accounts = await _uow.Accounts.GetAllAsync();
             return accounts.Select(a => new AccountDto
             {
+                Id = a.Id,
                 AccountNumber = a.AccountNumber,
                 FullName = a.FullName,
                 Balance = a.Balance
             });
+        }
+
+        // Get a single account by its Database ID
+        public async Task<AccountDto?> GetByIdAsync(int id)
+        {
+            var account = await _uow.Accounts.GetByIdAsync(id);
+
+            if (account == null) return null;
+
+            return new AccountDto
+            {
+                Id = account.Id,
+                AccountNumber = account.AccountNumber,
+                FullName = account.FullName,
+                Balance = account.Balance
+            };
+        }
+
+        // Update allowed properties (Name and AccountNumber only)
+        public async Task UpdateAccountAsync(UpdateAccountDto input)
+        {
+            var account = await _uow.Accounts.GetByIdAsync(input.Id);
+
+            if (account == null)
+            {
+                throw new Exception("Account not found.");
+            }
+
+            // Check if the NEW AccountNumber is already taken by SOMEONE ELSE
+            if (account.AccountNumber != input.AccountNumber)
+            {
+                var duplicate = await _uow.Accounts.GetByAccountNumberAsync(input.AccountNumber);
+                if (duplicate != null)
+                {
+                    throw new Exception("The new Account Number is already in use by another account.");
+                }
+            }
+
+            account.FullName = input.FullName;
+            account.AccountNumber = input.AccountNumber;
+
+            await _uow.CompleteAsync();
         }
     }
 }
