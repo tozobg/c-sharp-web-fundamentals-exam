@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TransactionSystem.Core.DTOs.Input;
+using TransactionSystem.Core.DTOs.Output;
 using TransactionSystem.Models;
 
 namespace TransactionSystem.Core.Services
@@ -17,55 +18,96 @@ namespace TransactionSystem.Core.Services
             _uow = uow;
         }
 
-        // Deposit money
-        public async Task DepositAsync(TransactionInputDto input)
+        #region Deposits
+        public async Task<IEnumerable<TransactionDetailsDto>> GetDepositsByAccountIdAsync(int accountId)
         {
-            Account? account = await _uow.Accounts.GetByAccountNumberAsync(input.AccountNumber);
+            // Get all deposits from the generic repository
+            // TODO: Implement custom extension repository to get all by accountId !
+            var allDeposits = await _uow.Deposits.GetAllAsync();
+
+            // Filter by AccountId and map to the Output DTO
+            return allDeposits
+                .Where(d => d.AccountId == accountId)
+                .Select(d => new TransactionDetailsDto
+                {
+                    Id = d.Id,
+                    AccountId = d.AccountId,
+                    Money = d.Money,
+                    Date = d.Date, // Ensure your Deposit model has a Date!
+                    Type = "Deposit"
+                })
+                .OrderByDescending(d => d.Date); // Newest first
+        }
+
+        public async Task CreateDepositAsync(TransactionInputDto input)
+        {
+            Account? account = await _uow.Accounts.GetByIdAsync(input.AccountId);
 
             if (account == null)
             {
                 throw new Exception("Account not found.");
             }
 
-            account.Balance += input.Amount;
+            account.Balance += input.Money;
 
-            var deposit = new Deposit
+            Deposit deposit = new ()
             {
                 AccountId = account.Id,
-                Money = input.Amount
+                Money = input.Money
             };
 
             await _uow.Deposits.AddAsync(deposit);
             await _uow.CompleteAsync();
         }
 
+        public async Task DeleteDepositAsync(int depositId, int accountId)
+        {
+            Deposit? deposit = await _uow.Deposits.GetByIdAsync(depositId);
+            Account? account = await _uow.Accounts.GetByIdAsync(accountId);
+
+            if (deposit != null && account != null)
+            {
+                // Subtract the money from the account balance
+                account.Balance -= deposit.Money;
+
+                // Delete the record
+                await _uow.Deposits.RemoveAsync(deposit);
+
+                await _uow.CompleteAsync();
+            }
+        }
+        #endregion
+
+        #region Withdraws
         // Withdraw money
         public async Task WithdrawAsync(TransactionInputDto input)
         {
-            Account? account = await _uow.Accounts.GetByAccountNumberAsync(input.AccountNumber);
+            Account? account = await _uow.Accounts.GetByAccountNumberAsync(input.AccountId);
 
             if (account == null)
             {
                 throw new Exception("Account not found.");
             }
 
-            if (account.Balance < input.Amount)
+            if (account.Balance < input.Money)
             {
                 throw new Exception("Insufficient funds.");
             }
 
-            account.Balance -= input.Amount;
+            account.Balance -= input.Money;
 
             var withdraw = new Withdraw
             {
                 AccountId = account.Id,
-                Money = input.Amount
+                Money = input.Money
             };
 
             await _uow.Withdraws.AddAsync(withdraw);
             await _uow.CompleteAsync();
         }
+        #endregion
 
+        #region Transfers
         // Transfer money between accounts
         public async Task TransferAsync(TransferInputDto input)
         {
@@ -77,23 +119,24 @@ namespace TransactionSystem.Core.Services
                 throw new Exception("One or both accounts not found.");
             }
 
-            if (from.Balance < input.Amount)
+            if (from.Balance < input.Money)
             {
                 throw new Exception("Insufficient funds.");
             }
 
-            from.Balance -= input.Amount;
-            to.Balance += input.Amount;
+            from.Balance -= input.Money;
+            to.Balance += input.Money;
 
             var transfer = new Transfer
             {
                 FromAccountId = from.Id,
                 ToAccountId = to.Id,
-                Money = input.Amount
+                Money = input.Money
             };
 
             await _uow.Transfers.AddAsync(transfer);
             await _uow.CompleteAsync();
         }
+        #endregion
     }
 }

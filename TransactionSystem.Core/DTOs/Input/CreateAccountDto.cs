@@ -12,7 +12,7 @@ namespace TransactionSystem.Core.DTOs.Input
         public required string FullName { get; set; } = string.Empty;
 
         [Required]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than 0.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Balance must be greater than 0.")]
         public required decimal Balance { get; set; }
     }
 }

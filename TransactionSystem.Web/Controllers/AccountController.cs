@@ -32,7 +32,10 @@ namespace TransactionSystem.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateAccountDto dto)
         {
-            if (!ModelState.IsValid) return View(dto);
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
 
             try
             {
@@ -43,7 +46,7 @@ namespace TransactionSystem.Web.Controllers
             catch (Exception ex)
             {
                 if (ex.Message == "Full name must be between 3 and 255 characters.") ModelState.AddModelError("FullName", ex.Message);
-                if (ex.Message == "Amount must be greater than 0.") ModelState.AddModelError("Balance", ex.Message);
+                if (ex.Message == "Balance must be greater than 0.") ModelState.AddModelError("Balance", ex.Message);
                 if (ex.Message == "Account number already exists.") ModelState.AddModelError("AccountNumber", ex.Message);
 
                 return View(dto);
@@ -54,9 +57,12 @@ namespace TransactionSystem.Web.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             AccountDto? account = await _accountService.GetByIdAsync(id);
-            if (account == null) return NotFound();
 
-            // Map your output Dto to the update Dto
+            if (account == null)
+            {
+                return NotFound();
+            }
+
             UpdateAccountDto updateDto = new()
             {
                 Id = account.Id,
@@ -71,7 +77,10 @@ namespace TransactionSystem.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(UpdateAccountDto dto)
         {
-            if (!ModelState.IsValid) return View(dto);
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
 
             try
             {

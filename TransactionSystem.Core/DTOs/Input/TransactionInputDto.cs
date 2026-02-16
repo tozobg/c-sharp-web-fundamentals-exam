@@ -10,10 +10,10 @@ namespace TransactionSystem.Core.DTOs.Input
     public class TransactionInputDto
     {
         [Required]
-        public required int AccountNumber { get; set; }
+        public required int AccountId { get; set; }
 
         [Required]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than 0.")]
-        public required decimal Amount { get; set; }
+        [Range(0.01, double.MaxValue, ErrorMessage = "Money must be greater than 0.")]
+        public required decimal Money { get; set; }
     }
 }
