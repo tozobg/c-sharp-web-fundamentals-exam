@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TransactionSystem.Core\TransactionSystem.Core.csproj" />
-    <ProjectReference Include="..\TransactionSystem.Data.InMemory\TransactionSystem.Data.InMemory.csproj" />
     <ProjectReference Include="..\TransactionSystem.Models\TransactionSystem.Models.csproj" />
   </ItemGroup>
 

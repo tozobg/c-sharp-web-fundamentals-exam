@@ -5,14 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using TransactionSystem.Core.DTOs.Input;
 using TransactionSystem.Core.Services;
-using TransactionSystem.Data.InMemory.UnitOfWork;
 
 namespace TransactionSystem.Tests.Services
 {
     [TestFixture]
     public class AccountServiceTests
     {
-        private InMemoryUnitOfWork _uow = null!;
         private AccountService _service = null!;
 
         [SetUp]
