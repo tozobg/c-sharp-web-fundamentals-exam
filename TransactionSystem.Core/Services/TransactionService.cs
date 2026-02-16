@@ -25,7 +25,6 @@ namespace TransactionSystem.Core.Services
             // TODO: Implement custom extension repository to get all by accountId !
             var allDeposits = await _uow.Deposits.GetAllAsync();
 
-            // Filter by AccountId and map to the Output DTO
             return allDeposits
                 .Where(d => d.AccountId == accountId)
                 .Select(d => new TransactionDetailsDto
@@ -33,10 +32,10 @@ namespace TransactionSystem.Core.Services
                     Id = d.Id,
                     AccountId = d.AccountId,
                     Money = d.Money,
-                    Date = d.Date, // Ensure your Deposit model has a Date!
+                    Date = d.Date,
                     Type = "Deposit"
                 })
-                .OrderByDescending(d => d.Date); // Newest first
+                .OrderByDescending(d => d.Date); 
         }
 
         public async Task CreateDepositAsync(TransactionInputDto input)
@@ -50,7 +49,7 @@ namespace TransactionSystem.Core.Services
 
             account.Balance += input.Money;
 
-            Deposit deposit = new ()
+            Deposit deposit = new()
             {
                 AccountId = account.Id,
                 Money = input.Money
@@ -79,10 +78,28 @@ namespace TransactionSystem.Core.Services
         #endregion
 
         #region Withdraws
-        // Withdraw money
-        public async Task WithdrawAsync(TransactionInputDto input)
+        public async Task<IEnumerable<TransactionDetailsDto>> GetWithdrawalsByAccountIdAsync(int accountId)
         {
-            Account? account = await _uow.Accounts.GetByAccountNumberAsync(input.AccountId);
+            // Get all withdrawals from the generic repository
+            // TODO: Implement custom extension repository to get all by accountId !
+            var allWithdraws = await _uow.Withdraws.GetAllAsync();
+
+            return allWithdraws
+                .Where(d => d.AccountId == accountId)
+                .Select(d => new TransactionDetailsDto
+                {
+                    Id = d.Id,
+                    AccountId = d.AccountId,
+                    Money = d.Money,
+                    Date = d.Date,
+                    Type = "Withdraw"
+                })
+                .OrderByDescending(d => d.Date);
+        }
+
+        public async Task CreateWithdrawalAsync(TransactionInputDto input)
+        {
+            Account? account = await _uow.Accounts.GetByIdAsync(input.AccountId);
 
             if (account == null)
             {
@@ -104,6 +121,21 @@ namespace TransactionSystem.Core.Services
 
             await _uow.Withdraws.AddAsync(withdraw);
             await _uow.CompleteAsync();
+        }
+
+        public async Task DeleteWithdrawalAsync(int withdrawalId, int accountId)
+        {
+            Withdraw? withdrawal = await _uow.Withdraws.GetByIdAsync(withdrawalId);
+            Account? account = await _uow.Accounts.GetByIdAsync(accountId);
+
+            if (withdrawal != null && account != null)
+            {
+                account.Balance += withdrawal.Money;
+
+                await _uow.Withdraws.RemoveAsync(withdrawal);
+
+                await _uow.CompleteAsync();
+            }
         }
         #endregion
 
