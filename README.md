@@ -1,15 +1,28 @@
-﻿# Transaction System - Console Application
+﻿# Transaction Management System - ASP.NET Core MVC
 
-Тransaction system written in **C# (.NET 8)** for softuni web exam task.  
+A banking management system built with **ASP.NET Core 8 MVC**, following SOLID principles and Clean Architecture.
+
+The project is written for softuni web exam task.  
 
 ---
+
+## 🚀 Getting Started
+1. **Clone the repository**: `git clone https://github.com/tozobg/c-sharp-web-fundamentals-exam.git`
+2. **Configure Database**: Update the `ConnectionStrings` in `TransactionSystem.Web'/appsettings.json` to point to your local SQL Server instance.
+3. **Apply Migrations**: Open the Package Manager Console. Change default project to `TransactionSystem.Data` and run: Update-Database
+
+## StartUp 
+TransactionSystem.Web -> Program.cs
 
 ## 📌 Features
 
 ### Core Operations
-- Create Account  
-- Deposit  
-- Withdraw  
+- Create Account
+- Edit Account
+- Deposit Money to Account
+- Remove Deposit
+- Withdraw Money from Account
+- Remove Withdraw
 - Transfer between accounts  (TODO)
 
 ### Architecture Highlights
@@ -26,7 +39,7 @@
 ### Database Provider
 - **SQL Server
 
-### NUnit Unit Tests
+### NUnit Unit Tests (Temporary removed)
 - Uses the **In-Memory Data Layer** for isolated testing  
 - Covers:
   - Account creation
@@ -74,9 +87,5 @@
 | Date          | text    | (Datetime)
 
 ---
-
-
-## StartUp 
-TransactionSystem.Web -> Program.cs
 
 Enjoy exploring the project!
