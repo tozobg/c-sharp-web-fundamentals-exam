@@ -14,7 +14,7 @@ namespace TransactionSystem.Web.Controllers
             _accountService = accountService;
         }
 
-        // GET: /Account/Index
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var accounts = await _accountService.GetAllAccountsAsync();
@@ -22,13 +22,12 @@ namespace TransactionSystem.Web.Controllers
             return View(accounts);
         }
 
-        // GET: /Account/Create
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: /Account/Create
         [HttpPost]
         public async Task<IActionResult> Create(CreateAccountDto dto)
         {
@@ -39,7 +38,6 @@ namespace TransactionSystem.Web.Controllers
 
             try
             {
-                // Try to save
                 await _accountService.CreateAccountAsync(dto);
                 return RedirectToAction(nameof(Index));
             }
@@ -53,7 +51,7 @@ namespace TransactionSystem.Web.Controllers
             }
         }
 
-        // GET: Account/Edit/1
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             AccountDto? account = await _accountService.GetByIdAsync(id);
@@ -73,7 +71,6 @@ namespace TransactionSystem.Web.Controllers
             return View(updateDto);
         }
 
-        // POST: Account/Edit/1
         [HttpPost]
         public async Task<IActionResult> Edit(UpdateAccountDto dto)
         {

@@ -15,7 +15,7 @@ public class TransactionController : Controller
     }
 
     #region Deposits
-    // GET: Transaction/IndexDeposits
+    [HttpGet]
     public async Task<IActionResult> IndexDeposits(int? accountId)
     {
         // Always load all accounts for the dropdown
@@ -39,7 +39,7 @@ public class TransactionController : Controller
         return View(deposits);
     }
 
-    // GET: Transaction/CreateDeposit?accountId=1
+    [HttpGet]
     public async Task<IActionResult> CreateDeposit(int accountId)
     {
         AccountDto? account = await _accountService.GetByIdAsync(accountId);
@@ -89,7 +89,7 @@ public class TransactionController : Controller
         }
         catch (Exception ex)
         {
-            // If something goes wrong, we go back with an error message
+            // On error, return with error message
             TempData["Error"] = "Could not delete deposit: " + ex.Message;
             return RedirectToAction(nameof(IndexDeposits), new { accountId });
         }
@@ -97,7 +97,8 @@ public class TransactionController : Controller
     #endregion
 
     #region Wirthdraws
-    // GET: Transaction/IndexWithdrawals
+
+    [HttpGet]
     public async Task<IActionResult> IndexWithdrawals(int? accountId)
     {
         IEnumerable<AccountDto> accounts = await _accountService.GetAllAccountsAsync();
@@ -118,7 +119,7 @@ public class TransactionController : Controller
         return View(withdrawals);
     }
 
-    // GET: Transaction/CreateWithdrawal
+    [HttpGet]
     public async Task<IActionResult> CreateWithdrawal(int accountId)
     {
         AccountDto? account = await _accountService.GetByIdAsync(accountId);
@@ -167,7 +168,7 @@ public class TransactionController : Controller
         }
         catch (Exception ex)
         {
-            // If something goes wrong, we go back with an error message
+            // // On error, return with error message
             TempData["Error"] = "Could not delete deposit: " + ex.Message;
             return RedirectToAction(nameof(IndexWithdrawals), new { accountId });
         }
